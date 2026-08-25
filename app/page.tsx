@@ -126,6 +126,17 @@ export default function WorkerAdminHome() {
             </Link>
           </div>
         </div>
+
+        {/* Safety & Liability Policy Flashcard */}
+        <div className="mt-10 w-full bg-gradient-to-r from-amber-500/10 via-error-container/20 to-amber-500/10 border-2 border-amber-500/30 rounded-3xl p-6 shadow-md flex items-start gap-4">
+          <ShieldAlert className="w-7 h-7 text-amber-600 dark:text-amber-400 shrink-0 mt-1" />
+          <div className="space-y-1 text-xs">
+            <h4 className="font-bold text-sm text-on-background">Official Hiring Liability Policy:</h4>
+            <p className="text-on-surface-variant leading-relaxed">
+              "If the worker is ordered not by the website but externally by calling or other sources, we are not responsible for any theft or damage done by him."
+            </p>
+          </div>
+        </div>
       </main>
 
       {/* Footer */}

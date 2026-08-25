@@ -1,0 +1,86 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && (
+        request.auth.token.role == 'ADMIN' ||
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'ADMIN'
+      );
+    }
+
+    function isWorker() {
+      return isAuthenticated() && (
+        request.auth.token.role == 'WORKER' ||
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'WORKER'
+      );
+    }
+
+    function isCustomer() {
+      return isAuthenticated() && (
+        request.auth.token.role == 'CUSTOMER' ||
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'CUSTOMER'
+      );
+    }
+
+    match /users/{userId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && request.auth.uid == userId;
+      allow update: if isOwner(userId) || isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    match /trades/{tradeId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /jobs/{jobId} {
+      allow read: if isAuthenticated();
+      allow create: if isCustomer() || isAdmin();
+      allow update: if isAuthenticated() && (
+        resource.data.customerId == request.auth.uid ||
+        resource.data.workerId == request.auth.uid ||
+        resource.data.status == 'RESERVATION_OPEN' ||
+        isAdmin()
+      );
+      allow delete: if isAdmin();
+    }
+
+    match /reservations/{reservationId} {
+      allow read: if isAuthenticated();
+      allow create, update: if isAuthenticated();
+      allow delete: if isAdmin();
+    }
+
+    match /payments/{paymentId} {
+      allow read: if isAuthenticated() && (
+        resource.data.customerId == request.auth.uid ||
+        resource.data.workerId == request.auth.uid ||
+        isAdmin()
+      );
+      allow write: if isAdmin();
+    }
+
+    match /disputes/{disputeId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+      allow update, delete: if isAdmin();
+    }
+
+    match /auditLogs/{logId} {
+      allow read: if isAdmin();
+      allow create: if isAdmin();
+      allow update, delete: if false;
+    }
+  }
+}

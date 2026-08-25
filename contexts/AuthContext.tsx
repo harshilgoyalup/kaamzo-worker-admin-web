@@ -94,7 +94,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       UNSKILLED_LABOUR: 100,
     };
 
-    const newUserDoc: User = {
+    const newUserDoc: any = {
       uid,
       name,
       email,
@@ -102,16 +102,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       role,
       preferredLanguage,
       verificationStatus: role === "WORKER" ? "PENDING" : "VERIFIED",
-      trade: role === "WORKER" ? trade : undefined,
-      hourlyRate: role === "WORKER" && trade ? hourlyRates[trade] : undefined,
-      totalJobsCompleted: role === "WORKER" ? 0 : undefined,
-      totalEarnings: role === "WORKER" ? 0 : undefined,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
     };
 
+    if (role === "WORKER") {
+      if (trade) {
+        newUserDoc.trade = trade;
+        newUserDoc.hourlyRate = hourlyRates[trade] || 100;
+      }
+      newUserDoc.totalJobsCompleted = 0;
+      newUserDoc.totalEarnings = 0;
+    }
+
     await setDoc(doc(db, "users", uid), newUserDoc);
-    setUserProfile(newUserDoc);
+    setUserProfile(newUserDoc as User);
   };
 
   const logout = async () => {

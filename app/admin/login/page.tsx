@@ -127,11 +127,19 @@ export default function AdminLoginPage() {
           </button>
         </form>
 
-        <div className="mt-6 text-center text-xs text-on-surface-variant">
-          Not an administrator?{" "}
-          <Link href="/login" className="font-bold text-primary hover:underline">
-            Go to Worker Portal
-          </Link>
+        <div className="mt-6 text-center text-xs text-on-surface-variant space-y-2">
+          <div>
+            Not an administrator?{" "}
+            <Link href="/login" className="font-bold text-primary hover:underline">
+              Go to Worker Portal
+            </Link>
+          </div>
+          <div>
+            Looking for customer bookings?{" "}
+            <a href="https://kaamzo-customer-web.vercel.app/" target="_blank" rel="noopener noreferrer" className="font-bold text-secondary hover:underline">
+              Go to Customer Web ↗
+            </a>
+          </div>
         </div>
       </div>
     </div>

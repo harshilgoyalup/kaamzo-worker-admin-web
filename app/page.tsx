@@ -30,6 +30,15 @@ export default function WorkerAdminHome() {
         </Link>
 
         <div className="flex items-center gap-3">
+          <a
+            href="https://kaamzo-customer-web.vercel.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-primary/30 text-xs font-bold text-primary hover:bg-primary/10 transition-colors"
+          >
+            Customer Web ↗
+          </a>
+
           <button
             onClick={handleTTS}
             className={`p-2 rounded-full flex items-center gap-1.5 text-xs font-bold ${
@@ -112,12 +121,31 @@ export default function WorkerAdminHome() {
               href="/admin/login"
               className="w-full py-3.5 px-4 rounded-xl bg-secondary text-on-secondary font-bold text-sm text-center flex items-center justify-center gap-2 hover:bg-on-background transition-colors shadow-md"
             >
-              <span>Admin Login (/admin)</span>
+              <span>Admin Login (/admin/login)</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         </div>
       </main>
+
+      {/* Footer */}
+      <footer className="mt-auto bg-surface-container-high border-t border-outline-variant px-4 lg:px-12 py-8 text-center text-xs text-on-surface-variant">
+        <p className="font-bold text-on-background mb-2">KAAMZO — Worker & Admin Operations Platform</p>
+        <div className="flex flex-wrap items-center justify-center gap-4 mb-3 font-semibold">
+          <a href="https://kaamzo-customer-web.vercel.app/" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
+            Customer Web Portal
+          </a>
+          <span>•</span>
+          <a href="https://kaamzo-worker-admin-web-1st-edition.vercel.app/" className="hover:text-primary transition-colors">
+            Worker Portal (Home)
+          </a>
+          <span>•</span>
+          <a href="https://kaamzo-worker-admin-web-1st-edition.vercel.app/admin/login" className="hover:text-secondary transition-colors">
+            Admin Dashboard (/admin/login)
+          </a>
+        </div>
+        <p>Built with Next.js & Unified Firebase Backend • English | Hindi | Punjabi</p>
+      </footer>
     </div>
   );
 }
